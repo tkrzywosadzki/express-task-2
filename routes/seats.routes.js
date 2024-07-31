@@ -28,6 +28,11 @@ router.route('/seats').post((req, res) => {
         return res.status(400).json({ message: 'All fields are required' });
     }
 
+    const isSeatTaken = db.seats.some(existingSeat => existingSeat.day === day && existingSeat.seat === seat);
+    if (isSeatTaken) {
+        return res.status(409).json({ message: 'The slot is already taken...' });
+    }
+
     const newId = uuidv4();
 
     const newSeat = { id: newId, day, seat, client, email };
