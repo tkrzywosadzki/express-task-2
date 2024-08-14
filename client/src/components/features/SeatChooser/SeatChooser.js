@@ -40,14 +40,8 @@ const SeatChooser = ({ chosenDay, chosenSeat, updateSeat }) => {
 
   const freeSeatsCalc = () => {
     const max = 50;
-    let seatsTaken = [];
-    for (let seat of seats) {
-      if (seat.day === chosenDay) {
-        seatsTaken.push(seat);
-      }
-    }
-    const freeSeats = max - seatsTaken.length;
-    return freeSeats;
+    const seatsTaken = seats.filter(seat => seat.day === chosenDay);
+    return max - seatsTaken.length;
   };
 
   return (
@@ -60,7 +54,7 @@ const SeatChooser = ({ chosenDay, chosenSeat, updateSeat }) => {
       { (requests['LOAD_SEATS'] && requests['LOAD_SEATS'].success) && <div className="seats">{[...Array(50)].map((x, i) => prepareSeat(i+1) )}</div>}
       { (requests['LOAD_SEATS'] && requests['LOAD_SEATS'].pending) && <Progress animated color="primary" value={50} /> }
       { (requests['LOAD_SEATS'] && requests['LOAD_SEATS'].error) && <Alert color="warning">Couldn't load seats...</Alert> }
-      <p>Free seats: {freeSeatsCalc()}/20</p>
+      <p>Free seats: {freeSeatsCalc()}/50</p>
     </div>
   )
 }
